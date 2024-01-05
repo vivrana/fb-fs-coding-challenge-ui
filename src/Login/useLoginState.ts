@@ -4,27 +4,27 @@ const localStorageKey = "USER_ID";
 
 function loadUserId() {
   try {
-    return JSON.parse(localStorage.getItem(localStorageKey) ?? "") as number;
+    return JSON.parse(localStorage.getItem(localStorageKey) ?? "") as string;
   } catch (e) {
     return null;
   }
 }
 
-function storeUserId(userId: number | null) {
+function storeUserId(userId: string | null) {
   localStorage.setItem(localStorageKey, JSON.stringify(userId));
 }
 
 export interface LoginState {
-  userId: number | null;
-  setUserId: (userId: number) => void;
+  userId: string | null;
+  setUserId: (userId: string) => void;
   logOut: () => void;
   isLoggedIn: boolean;
 }
 
 export function useLoginState(): LoginState {
-  const [userId, setUserIdState] = useState<number | null>(loadUserId());
+  const [userId, setUserIdState] = useState<string | null>(loadUserId());
 
-  const setUserId = (userId: number | null) => {
+  const setUserId = (userId: string | null) => {
     setUserIdState(userId);
     storeUserId(userId);
   };

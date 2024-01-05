@@ -10,20 +10,18 @@ export function LoginPage() {
   const handleLogIn = () => {
     setErrorMessage("");
 
-    const userIdNumber = Number.parseInt(userIdInput);
-
-    if (Number.isNaN(userIdNumber)) {
-      setErrorMessage("User ID must be a number");
+    if (userIdInput.trim() === "") {
+      setErrorMessage("Please enter a valid User ID");
       return;
     }
 
-    setUserId(userIdNumber);
+    setUserId(userIdInput);
   };
 
   return (
     <Box>
       <Heading margin="small">Login Page</Heading>
-      <Box margin="small" direction="row" gap="small" align="flex-end">
+      <Box margin="small" direction="row" gap="small">
         <FormField
           label="Enter User ID"
           error={errorMessage}
