@@ -49,13 +49,17 @@ The page will automatically update as you save your code.
 
 ## Requirements
 
-You can find the expected UI design [here](https://www.figma.com/file/Wk0wHOUs5MLlOg4BHaVllC/Coding-Challange?type=design&node-id=0%3A1&mode=design&t=mhONefZ5wUjDMWGJ-1).
+Please refer to the design mocks provided to you with the prompt.
 
-We have already implemented the "log in" and "log out" functionality for you to save time. We have also provided the code needed to call the API to retrive points balances. You need to implement the following functionality for the front-end:
+We have partially implemented the "log in" and "log out" functionality for you to save time. We have also provided the code needed to call the API to retrieve points balances. You need to implement the following functionality for the front-end:
 
-- A form to redeem points for a coupon
-- A history of transactions (redemptions and cancellations) displayed under the form
-- Ability to cancel a coupon (in the history)
+- Remaining Login functionality to properly render the logged-in view (within the `LoginGuard` component)
+- Complete the `DisplayPointsBalance` component to include:
+  - A form with an input for the dollar amount and a submit button to redeem points for a coupon
+  - Functionality to submit the form and complete the transaction
+  - Success message with the number of points redeemed
+  - Error message for any incorrect/invalid input
+- All endpoints must connect to the backend server you created as part of the backend portion of the challenge
 
 The points balance and transaction history that are displayed should automatically be refreshed whenever points are redeemed or a redemption is canceled.
 
