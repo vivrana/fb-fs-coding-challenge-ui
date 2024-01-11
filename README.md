@@ -1,6 +1,8 @@
 # Full Stack Coding Challenge (Front-end)
 
-We have provided this project as a starting point for you to complete the front-end part of our full stack coding challenge. Please read below before implementing your front-end.
+We have provided this project as a starting point for you to complete the front-end part of our full stack coding challenge.
+
+Before starting, **please fork this repo** where you will implement all of your work. When complete, you will submit a link to your forked repo.
 
 ## Installing node / yarn
 
@@ -67,4 +69,4 @@ You should be able to log out of a user's account and log in to another user's a
 
 You should use the components from the `grommet` library to implement your interface. There are already plenty of examples in the starter code. See [this documentation](https://v2.grommet.io/components) to use other components.
 
-Use the [react-query](https://tanstack.com/query/latest/docs/react/overview) library to make API calls. We already have an example for retrieving points balances as previously mentioned. You can find this in the `api` subdirectory of `src`.
+Use the `fetch` API to make calls to your service. We already have an example for retrieving points balances as previously mentioned. You can find this in the `api` subdirectory of `src`.
