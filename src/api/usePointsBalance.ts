@@ -17,12 +17,14 @@ export function usePointsBalance() {
       const response = await fetch(
         `http://localhost:8080/points/balance/${id}`
       );
+      if (!response.ok) {
+        throw new Error(await response.json());
+      }
       const data: { balance: number } = await response.json();
-
-      setIsLoading(false);
       setPoints(data.balance);
-    } catch (_e) {
-      setError("Unknown error");
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
       setIsLoading(false);
     }
   }, []);
