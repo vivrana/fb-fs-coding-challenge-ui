@@ -32,4 +32,24 @@ app.get("/points/balance/:userId", (req, res) => {
   });
 });
 
+app.post("/points/balance/:userId", (req, res) => {
+  const userId = Number.parseInt(req.params.userId);
+
+  if (Number.isNaN(userId)) {
+    res.status(400);
+    return res.send(JSON.stringify("Invalid User ID"));
+  }
+
+  if (!balances.has(userId)) {
+    res.status(404);
+    return res.send(JSON.stringify("User not found"));
+  }
+
+  const balance = balances.get(userId) - 10;
+
+  res.send({
+    balance,
+  });
+});
+
 app.listen(8080);
