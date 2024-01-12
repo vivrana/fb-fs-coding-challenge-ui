@@ -18,7 +18,6 @@ export function usePointsBalance() {
         `http://localhost:3000/points/balance/${id}`
       );
       if (!response.ok) {
-        console.log(response)
         throw new Error(await response.json().then(data => data.error_message));
       }
       const data: { balance: number } = await response.json();

@@ -19,10 +19,10 @@ class PointsController < ApplicationController
   def redeem
     return unless @user
 
-    points = params[:points].to_i
+    amount = params[:amount].to_i
     # Actually our activerecord validation checks for the balance going negative, but
     # keeping it here for additional sanity.
-    if points < 0
+    if amount < 0
       render status: :bad_request, json: { error_message: I18n.t("negative_points") }
       return
     end
@@ -30,14 +30,14 @@ class PointsController < ApplicationController
     # Points calculation from Amount is fairly static for now.  However, we can certainly
     # imagine a future where we can dynamically swap out the scheme per input request or in reaction
     # to other configuration change.
-    points = BalanceAmountInputScheme.new(points, :usd).points
+    points = BalanceAmountInputScheme.new(amount, :usd).points
     if @user.balance - points < 0
       render status: :bad_request, json: { error_message: I18n.t("invalid_points") }
       return
     end
 
     @user.update!(balance: @user.balance - points)
-    render status: :ok
+    render status: :ok, json: @user
   end
 
   # Add points in USD value.
@@ -48,20 +48,20 @@ class PointsController < ApplicationController
   def add
     return unless @user
 
-    points = params[:points].to_i
-    if points < 0
+    amount = params[:amount].to_i
+    if amount < 0
       render status: :bad_request, json: { error_message: I18n.t("invalid_balance") }
       return
     end
 
-    points = BalanceAmountInputScheme.new(points, :usd).points
+    points = BalanceAmountInputScheme.new(amount, :usd).points
     if User::MAX_BALANCE - @user.balance < points
       render status: :bad_request, json: { error_message: I18n.t("invalid_balance") }
       return
     end
 
     @user.update!(balance: @user.balance + points)
-    render status: :ok
+    render status: :ok, json: @user
   end
 
   # transactions returns the history of balance/points changes for the given user.
