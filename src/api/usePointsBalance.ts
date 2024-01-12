@@ -35,5 +35,5 @@ export function usePointsBalance() {
     }
   }, [userId, getData]);
 
-  return { points, isLoading, error };
+  return { points, isLoading, error, setPoints };
 }

@@ -19,7 +19,7 @@ export function LoginPage() {
   };
 
   return (
-    <Box>
+    <Box width="wide">
       <Heading margin="small">Login Page</Heading>
       <Box margin="small" direction="row" gap="small">
         <FormField

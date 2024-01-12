@@ -14,18 +14,19 @@ export function LoginGuard({ children }: LoginGuardProps) {
 
   return (
     <LoginStateProvider state={state}>
-      <LoginPage />
+      {!isLoggedIn && <LoginPage />}
       {isLoggedIn && (
-        <Box pad="medium" width="medium">
-          <Card pad="small" background="accent-3" gap="small">
-            <CardHeader>
+        <Box pad="medium" width="wide">
+          <Card pad="small" gap="small">
+            {
+              /*The CardHeader component is not part of the mockup but keeping it as its
+              part of the original code.*/
+            }
+            <CardHeader background="accent-3">
               <strong>You are Logged In!</strong>
             </CardHeader>
             <CardBody>
-              <p>
-                Please Edit the <code>LoginGuard</code> component to display
-                proper page according to the provided designs.
-              </p>
+              { children }
             </CardBody>
           </Card>
         </Box>
