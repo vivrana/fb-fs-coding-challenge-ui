@@ -7,3 +7,7 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+
+# Take advantage of test fixtures to load the default seeds.  Feel free to edit
+# test/fixtures/users.yml to add more users as needed.
+Rake.application["db:fixtures:load"].invoke
