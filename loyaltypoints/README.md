@@ -31,7 +31,7 @@ I've implemented an arbitrary limit of unsigned 32 bit int as max value for `bal
 overflows.  However, we can of course tweak this.  Just pointing it out as an explicit decision.  Normally, we'll have
 a generous limit to being with but keeping it more contained for now.
 
-There are some versioning gems available to keep track of transaction histories and such.  I've opted for writing this
+There are some versioning gems available to keep track of transaction histories and such.  I've opted to write this
 code myself as this is a take-home exercise - I'm assuming you'll have better signals with code I'm writing rather than
 configuring in a gem.
 
@@ -45,9 +45,7 @@ I've chosen the name model name to be `balance_histories` to match the user DB's
 the routes (API endpoint) to be "transactions" to ensure that API is still sees "transactions" as the name, matching
 the requirement.  For production code, I'd ensure that we are in alignment for naming conventions before coding.
 
-I realize that return format of the transactions is not ideal.  As in, current
+I realize that the return format of the transactions is not ideal.  As in, current
 implementation takes a naive approach of returning raw values.  We may want to massage them to add some some facts and
 (like the fact that user point redemption/addition happened) as well as to format dates appropriately
-(Internationalization or other criteria.)
-
-
+(Internationalization or other criteria.)  I'm keeping time in mind and mentioning this as a future ToDo.
