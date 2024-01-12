@@ -28,4 +28,18 @@
 #       enabled: "ON"
 
 en:
-  hello: "Hello world"
+  invalid_user_id: "Invalid User ID"
+  user_not_found: "User not found"
+  invalid_points: "Points redemption should be greater than 0 and up to your max amount."
+  invalid_balance: "Your balance should be equal to or greater than 0 and up to a 2,147,483,647."
+  activerecord:
+    errors:
+      models:
+        user:
+          attributes:
+            balance:
+              blank: "balance cannot be empty"
+            numericality:
+              greater_than_or_equal_to: "balance should be greater than or equal to 0"
+
+

@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 1
+  starting_balance: 0
+  ending_balance: 100
+
+two:
+  user_id: 2
+  starting_balance: 0
+  ending_balance: 50

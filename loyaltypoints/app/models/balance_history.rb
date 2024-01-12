@@ -1,0 +1,2 @@
+class BalanceHistory < ApplicationRecord
+end
