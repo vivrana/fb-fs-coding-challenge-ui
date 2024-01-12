@@ -30,7 +30,8 @@
 en:
   invalid_user_id: "Invalid User ID"
   user_not_found: "User not found"
-  invalid_points: "Points redemption should be greater than 0 and up to your max amount."
+  negative_points: "Please enter a value greater than 0."
+  invalid_points: "You have exceeded amount available. Please enter a smaller value."
   invalid_balance: "Your balance should be equal to or greater than 0 and up to a 2,147,483,647."
   activerecord:
     errors:
