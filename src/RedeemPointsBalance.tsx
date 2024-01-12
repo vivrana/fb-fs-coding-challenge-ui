@@ -2,7 +2,7 @@ import {Box, Button, FormField, TextInput} from "grommet";
 import { usePointsBalance } from "./api";
 //import { formatCurrency, convertPointsToDollarAmount } from "./utils";
 import { useState } from "react";
-import { updatePointsBalance } from "./api/updatePointsBalance.ts";
+import { redeemPointsBalance } from "./api/redeemPointsBalance.ts";
 import {useLoginStateController} from "./Login";
 
 export function RedeemPointsBalance() {
@@ -13,18 +13,17 @@ export function RedeemPointsBalance() {
 
   const handlePointRedeem = () => {
     setErrorMessage("");
-    if (!points){
+    if (!points) {
       setErrorMessage("No points to redeem");
     }
 
-    // @ts-expect-error we already check whether `points` are undefined.  No need to recheck below.
-    if (!pointsInput || pointsInput > points ) {
+    if (!pointsInput) {
       setErrorMessage("Please enter a value between 1 and " + points);
       return;
     }
 
-    updatePointsBalance(userId, pointsInput)
-        .then(data => setPoints(data))
+    redeemPointsBalance(userId, pointsInput)
+        .then(data => { console.log("data", data); setPoints(data); })
         .catch( (e: any) => e ? setErrorMessage(e.message) : setErrorMessage("") );
   };
 
@@ -39,7 +38,7 @@ export function RedeemPointsBalance() {
             }}
         >
           <TextInput
-              placeholder={points}
+              placeholder="Type here"
               value={pointsInput}
               onChange={(ev) => setPointsInput(ev.target.value)}
           />

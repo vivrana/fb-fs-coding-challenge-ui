@@ -1,6 +1,6 @@
 export const POINTS_BALANCE_KEY = "POINTS_BALANCE";
 
-export async function updatePointsBalance(userId: string|null, points: string) {
+export async function redeemPointsBalance(userId: string|null, points: string) {
   if (!points) {
     throw new Error("points should be more than 0");
   }
@@ -11,14 +11,12 @@ export async function updatePointsBalance(userId: string|null, points: string) {
     body: JSON.stringify({ points: points })
   };
   const response = await fetch(
-    `http://localhost:8080/points/balance/${userId}`,
+    `http://localhost:3000/points/redeem/${userId}`,
       requestOptions,
   );
   if (!response.ok) {
-    throw new Error(await response.json());
+    throw new Error(await response.json().then( (data) => data.error_message ));
   }
   const data: { balance: number } = await response.json();
   return data.balance;
 }
-
-

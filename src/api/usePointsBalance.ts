@@ -15,10 +15,11 @@ export function usePointsBalance() {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/points/balance/${id}`
+        `http://localhost:3000/points/balance/${id}`
       );
       if (!response.ok) {
-        throw new Error(await response.json());
+        console.log(response)
+        throw new Error(await response.json().then(data => data.error_message));
       }
       const data: { balance: number } = await response.json();
       setPoints(data.balance);
