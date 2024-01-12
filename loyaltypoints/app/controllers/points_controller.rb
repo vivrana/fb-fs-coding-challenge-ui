@@ -1,11 +1,9 @@
+require_relative '../models/balance_schemes/balance_amount_scheme'
+
 class PointsController < ApplicationController
   # If we can't find the user, then render errors.  Our get balance and update balance
   # methods don't need to do anything if we don't have a valid user.
   before_action :load_user
-
-  # Enforcing an initial max.  We should set this significantly higher in our migrations as well as in
-  # validations, but for our current exercise, the primary purpose is to show that we've thought of overflow.
-  MAX_BALANCE = 2**31 - 1
 
   def balance
     return unless @user
@@ -13,7 +11,7 @@ class PointsController < ApplicationController
     render json: @user
   end
 
-  # Redeem points.
+  # Redeem points in USD value.
   # params should include valid user_id and the points that we want to redeem.
   # E.g. post "points/redeem/1", params: { points: 10 }.  This will reduce 10 points from User with
   # id 1.
@@ -24,7 +22,16 @@ class PointsController < ApplicationController
     points = params[:points].to_i
     # Actually our activerecord validation checks for the balance going negative, but
     # keeping it here for additional sanity.
-    if points < 0 || @user.balance - points < 0
+    if points < 0
+      render status: :bad_request, json: { error_message: I18n.t("negative_points") }
+      return
+    end
+
+    # Points calculation from Amount is fairly static for now.  However, we can certainly
+    # imagine a future where we can dynamically swap out the scheme per input request or in reaction
+    # to other configuration change.
+    points = BalanceAmountInputScheme.new(points, :usd).points
+    if @user.balance - points < 0
       render status: :bad_request, json: { error_message: I18n.t("invalid_points") }
       return
     end
@@ -33,7 +40,7 @@ class PointsController < ApplicationController
     render status: :ok
   end
 
-  # Add points.
+  # Add points in USD value.
   # Params should include valid user_id and the points that we want to add.
   # E.g. post "points/add/1", params: { points: 10 }.  This will add 10 points to the balance of User with
   # id 1.
@@ -42,7 +49,13 @@ class PointsController < ApplicationController
     return unless @user
 
     points = params[:points].to_i
-    if points < 0 || MAX_BALANCE - @user.balance < points
+    if points < 0
+      render status: :bad_request, json: { error_message: I18n.t("invalid_balance") }
+      return
+    end
+
+    points = BalanceAmountInputScheme.new(points, :usd).points
+    if User::MAX_BALANCE - @user.balance < points
       render status: :bad_request, json: { error_message: I18n.t("invalid_balance") }
       return
     end

@@ -70,3 +70,5 @@ You should be able to log out of a user's account and log in to another user's a
 You should use the components from the `grommet` library to implement your interface. There are already plenty of examples in the starter code. See [this documentation](https://v2.grommet.io/components) to use other components.
 
 Use the `fetch` API to make calls to your service. We already have an example for retrieving points balances as previously mentioned. You can find this in the `api` subdirectory of `src`.
+
+## [Server Docs](./loyaltypoints/README.md)

@@ -25,7 +25,9 @@ class PointsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "invalid balance redemption" do
-    post "/points/redeem/1", params: { points: 1000000 }
+    # User 1 has 100 points by default, an amount of 20 is equivalent to
+    # 20 * 100 = 200 points and is thus invalid redemption amount.
+    post "/points/redeem/1", params: { points: 20 }
     assert_response 400
     body = JSON.parse(response.body)
     assert_equal(I18n.t("invalid_points"), body["error_message"])
