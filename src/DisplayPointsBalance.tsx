@@ -1,9 +1,10 @@
-import {Box, Button, FormField, Text, TextInput} from "grommet";
+import {Box, Button, DataTable, FormField, Text, TextInput} from "grommet";
 import { usePointsBalance } from "./api";
 import {formatCurrency, convertPointsToDollarAmount, convertDollarAmountToPoints} from "./utils";
 import {redeemPointsBalance} from "./api/redeemPointsBalance.ts";
 import {useState} from "react";
 import {useLoginStateController} from "./Login";
+import {Transaction, useBalanceHistory} from "./api/useBalanceHistory.ts";
 
 export function DisplayPointsBalance() {
   const { points, error, isLoading, setPoints } = usePointsBalance();
@@ -11,6 +12,25 @@ export function DisplayPointsBalance() {
   const [errorMessage, setErrorMessage] = useState("");
   const [redeemSuccess, setRedeemSuccess] = useState(false);
   const { userId } = useLoginStateController();
+  const { transactions, transactionFetchError } = useBalanceHistory();
+  const columns = [
+    {
+      property: 'starting_balance',
+      header: 'Starting Balance',
+      render: (datum: Transaction) => <Text truncate>{datum.startingBalance}</Text>,
+    },
+    {
+      property: 'ending_balance',
+      header: 'Ending Balance',
+      render: (datum: Transaction) => <Text truncate>{datum.endingBalance}</Text>,
+    },
+    {
+      property: 'updated_at',
+      header: 'Changed At',
+      render: (datum: Transaction) => <Text truncate>{datum.updatedAt}</Text>,
+      sortable: true,
+    },
+  ];
 
   const handlePointRedeem = () => {
     setRedeemSuccess(false)
@@ -71,6 +91,18 @@ export function DisplayPointsBalance() {
             {redeemSuccess && <Text color="focus" size="large">You just redeemed {pointsInput} points!</Text>}
           </Box>
       )}
+
+      { transactionFetchError && <Text>{transactionFetchError}</Text> }
+      { !transactionFetchError &&
+      <DataTable
+          aria-describedby="storage-pools-heading"
+          data={transactions}
+          columns={columns}
+          fill
+          pin
+          sortable
+      />
+      }
     </Box>
   );
 }
