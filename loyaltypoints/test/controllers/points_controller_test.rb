@@ -27,26 +27,26 @@ class PointsControllerTest < ActionDispatch::IntegrationTest
   test "invalid balance redemption" do
     # User 1 has 100 points by default, an amount of 20 is equivalent to
     # 20 * 100 = 200 points and is thus invalid redemption amount.
-    post "/points/redeem/1", params: { points: 20 }
+    post "/points/redeem/1", params: { amount: 20 }
     assert_response 400
     body = JSON.parse(response.body)
     assert_equal(I18n.t("invalid_points"), body["error_message"])
   end
 
   test "valid balance redemption" do
-    post "/points/redeem/1", params: { points: 10 }
+    post "/points/redeem/1", params: { amount: 10 }
     assert_response 200
   end
 
   test "invalid balance addition" do
-    post "/points/add/1", params: { points: -13234 }
+    post "/points/add/1", params: { amount: -13234 }
     assert_response 400
     body = JSON.parse(response.body)
     assert_equal(I18n.t("invalid_balance"), body["error_message"])
   end
 
   test "valid balance addition" do
-    post "/points/add/1", params: { points: 1000 }
+    post "/points/add/1", params: { amount: 1000 }
     assert_response :success
   end
 
@@ -64,7 +64,7 @@ class PointsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     body = JSON.parse(response.body).first
-    assert_equal(body["starting_balance"], 100)
-    assert_equal(body["ending_balance"], 20)
+    assert_equal(body["startingBalance"], 100)
+    assert_equal(body["endingBalance"], 20)
   end
 end

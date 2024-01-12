@@ -87,6 +87,9 @@ class PointsController < ApplicationController
     if histories.none?
       render status: :not_found
     else
+      histories = histories.map do |h|
+        h.as_json.deep_transform_keys{ |k| k.camelize(:lower) }
+      end
       render json: histories
     end
   end
