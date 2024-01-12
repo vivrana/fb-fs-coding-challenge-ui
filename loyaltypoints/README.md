@@ -13,9 +13,12 @@ Things you may want to cover:
     * Heads up, depending on your package manager, you may need to add newly installed ruby to your path
       (e.g. echo `export PATH="/opt/homebrew/opt/ruby/bin:$PATH"' >> ~/.zshrc`).  Followed by starting a new terminal session.
   * You may need to install bundler: `gem install bundler`
-  * from the `loyaltypoints` directory, run `bundle install`
-  * `bundle exec rake db:reset`
-  * You can run tests by: `bundle exec rake test`
+  * from the `loyaltypoints` directory:
+    * run `bundle install`
+    * `bundle exec rake db:reset`
+    * You can run tests by: `bundle exec rake test`
+    * Launch Rails server with `bundle exec rails s`
+    * Play!
 
 Default values:
 
