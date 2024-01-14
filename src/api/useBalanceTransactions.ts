@@ -3,7 +3,6 @@ import { useLoginStateController } from "../Login";
 
 export const POINTS_BALANCE_KEY = "POINTS_BALANCE";
 
-// ToDo: We can do better with property names.  Backend can send output camelCased.
 export interface Transaction {
   id?: number;
   startingBalance: number;
@@ -13,13 +12,13 @@ export interface Transaction {
   userId?: number;
 }
 
-export function useBalanceHistory() {
+export function useBalanceTransactions() {
   const { userId } = useLoginStateController();
   const [transactions, setTransactions] = useState<[Transaction]>();
   const [transactionFetchError, setTransactionFetchError] = useState<string>();
   const currentPage = 1, pageSize = 25; // Static constants for now but we should be able to paginate here...
 
-  const getData = useCallback(async (id: string) => {
+  const getTransactions = useCallback(async (id: string) => {
     setTransactionFetchError(undefined);
 
     try {
@@ -30,7 +29,6 @@ export function useBalanceHistory() {
         throw new Error(await response.json().then(data => data.error_message));
       }
       const data: [Transaction] = await response.json();
-      console.log(data);
       setTransactions(data);
     } catch (e: any) {
       setTransactionFetchError(e.message);
@@ -39,9 +37,9 @@ export function useBalanceHistory() {
 
   useEffect(() => {
     if (userId) {
-      getData(userId);
+      getTransactions(userId);
     }
-  }, [userId, getData]);
+  }, [userId, getTransactions]);
 
-  return { transactions, setTransactions, transactionFetchError };
+  return { transactions, getTransactions, transactionFetchError };
 }
