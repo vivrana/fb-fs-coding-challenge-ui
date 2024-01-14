@@ -4,7 +4,7 @@ import {formatCurrency, convertPointsToDollarAmount, convertDollarAmountToPoints
 import {redeemPointsBalance} from "./api/redeemPointsBalance.ts";
 import {useState} from "react";
 import {useLoginStateController} from "./Login";
-import {Transaction, useBalanceHistory} from "./api/useBalanceHistory.ts";
+import {Transaction, useBalanceTransactions} from "./api/useBalanceTransactions.ts";
 
 export function DisplayPointsBalance() {
   const { points, error, isLoading, setPoints } = usePointsBalance();
@@ -12,7 +12,7 @@ export function DisplayPointsBalance() {
   const [errorMessage, setErrorMessage] = useState("");
   const [redeemSuccess, setRedeemSuccess] = useState(false);
   const { userId } = useLoginStateController();
-  const { transactions, transactionFetchError } = useBalanceHistory();
+  const { transactions, transactionFetchError, getTransactions } = useBalanceTransactions();
   const columns = [
     {
       property: 'starting_balance',
@@ -49,6 +49,7 @@ export function DisplayPointsBalance() {
         .then((user) => {
           setPoints(user.balance);
           setRedeemSuccess(true);
+          getTransactions(userId as string);
         })
         .catch( (e: any) => e ? setErrorMessage(e.message) : setErrorMessage("") );
   };
