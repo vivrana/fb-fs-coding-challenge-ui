@@ -52,3 +52,22 @@ I realize that the return format of the transactions is not ideal.  As in, curre
 implementation takes a naive approach of returning raw values.  We may want to massage them to add some some facts and
 (like the fact that user point redemption/addition happened) as well as to format dates appropriately
 (Internationalization or other criteria.)  I'm keeping time in mind and mentioning this as a future ToDo.
+
+If transaction histories get too big, then we can scale in a few ways:
+- Add an index on user_id in the balance_histories table as it grows in size.
+- Some DBs will benefit from sharding.  I'm listing two possible ways to shard, with summarized pros and cons:
+  - DB can be sharded per enterprise customer.  I've seen this successfully done in large scale production instances.
+    It has the advantage of keeping Enterprise customer data separate and to support region-specific data location
+    requirements.  Plus, if the tenancy is well managed, there is a lesser chance of data leak across customer
+    instances and greater security.  On the flip size, hot shards are possible with large customer.  Some secondary
+    sharding scheme may be necessary in some instances.  Managing complex sharding can be error prone.
+  - Shard by key/ID: perhaps shard across instances based on user_id.  While several DBs can re-balance keys
+    more easily if there is a need for horizontal scaling the DB, there may be DB-specific pain points that we may need
+    to address for avoiding DB-specific data replication edge cases - like increased latency during scaling; I've heard
+    of instances where data race leads to some data being missed, specifically keys that are transitioning to another
+    shard while a shard comes up and are being updated at the same time.  It may be wise to pre-plan a sufficiently
+    large number of shards from get-go and avoid the need for horizontal scaling later, thus simplifying deployment.
+- Note that if a DB is configured to be read-heavy, it may be wise to do an async insert into the balance_histories.
+  In some instances, inserting into a large table is slow.  Publishing first to a queue, followed by an async process
+  inserting the record into the DB may be a better option.
+
